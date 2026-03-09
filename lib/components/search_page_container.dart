@@ -24,11 +24,11 @@ class SearchPageContainer extends StatelessWidget {
       width: 300,
       height: 400,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFFF48C25).withAlpha(25),
+            color: Theme.of(context).colorScheme.secondary,
             blurRadius: 4.0,
             offset: const Offset(0, -2),
           ),
@@ -69,17 +69,18 @@ class SearchPageContainer extends StatelessWidget {
                           fontFamily: "Plus Jakarta Sans",
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onInverseSurface,
                         ),
                       ),
                       const SizedBox(height: 2),
                       // Subtitle
                       Text(
                         subtitle.toUpperCase(),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: "Plus Jakarta Sans",
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: Color(0xFFF48C25),
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                       ),
                       const SizedBox(height: 14),
@@ -88,7 +89,7 @@ class SearchPageContainer extends StatelessWidget {
                         description,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
                           fontFamily: "Plus Jakarta Sans",
                         ),
                         overflow: TextOverflow.ellipsis,
@@ -119,14 +120,14 @@ class SearchPageContainer extends StatelessWidget {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: Color(0xFFF48C25).withAlpha(25),
+                                color: Theme.of(context).colorScheme.secondary,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 tags[0].toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: Color(0xFFF48C25),
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontFamily: "Plus Jakarta Sans",
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -141,14 +142,14 @@ class SearchPageContainer extends StatelessWidget {
                                 vertical: 6,
                               ),
                               decoration: BoxDecoration(
-                                color: Color(0xFFF48C25).withAlpha(25),
+                                color: Theme.of(context).colorScheme.secondary,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
                                 tags[1].toUpperCase(),
                                 style: TextStyle(
                                   fontSize: 10,
-                                  color: Color(0xFFF48C25),
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontFamily: "Plus Jakarta Sans",
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -170,15 +171,15 @@ class SearchPageContainer extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFF48C25),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Voir plus",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                           fontFamily: "Plus Jakarta Sans",
                           fontSize: 14,
                           fontWeight: FontWeight.w700,
