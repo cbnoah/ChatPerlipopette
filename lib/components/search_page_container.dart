@@ -102,9 +102,13 @@ class SearchPageContainer extends StatelessWidget {
             ),
             // Tags and Button
             Padding(
-              padding: tags.isEmpty ? const EdgeInsets.only(right: 15.0) : EdgeInsetsGeometry.all(0),
+              padding: tags.isEmpty
+                  ? const EdgeInsets.only(right: 15.0)
+                  : EdgeInsetsGeometry.all(0),
               child: Row(
-                mainAxisAlignment: tags.isEmpty ? MainAxisAlignment.end : MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: tags.isEmpty
+                    ? MainAxisAlignment.end
+                    : MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Tags
