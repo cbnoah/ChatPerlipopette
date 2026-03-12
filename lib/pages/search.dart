@@ -76,6 +76,7 @@ class _SearchState extends State<Search> {
             children: [
               // Search Bar
               TextField(
+                controller: _searchController,
                 decoration: InputDecoration(
                   fillColor: Theme.of(context).colorScheme.onSurface,
                   filled: true,

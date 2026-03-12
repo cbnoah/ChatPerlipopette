@@ -1,4 +1,3 @@
-import 'package:chatperlipopette/components/search_page_container.dart';
 import 'package:chatperlipopette/pages/search.dart';
 import 'package:chatperlipopette/themes/light_theme.dart';
 import 'package:flutter/material.dart';
