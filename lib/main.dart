@@ -14,8 +14,44 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      home: Search(),
       theme: lightTheme,
+      initialRoute: '/',
+      routes: {
+        // Home page with bottom navigation bar (need to be implemented)
+        '/': (context) => Scaffold(
+          backgroundColor: Colors.white,
+          bottomNavigationBar: BottomNavigationBar(
+            onTap: (index) {
+              switch (index) {
+                case 0:
+                  Navigator.pushNamed(context, '/');
+                  break;
+                case 1:
+                  Navigator.pushNamed(context, '/search');
+                  break;
+              }
+            },
+            items: [
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.search),
+                label: 'Search',
+              ),
+            ],
+          ),
+          body: Center(
+            child: Text(
+              "Bienvenue sur ChatPerlipopette !",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+            ),
+          ),
+        ),
+        '/search': (context) => Search(),
+      },
     );
   }
 }
