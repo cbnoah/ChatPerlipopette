@@ -93,7 +93,7 @@ class SearchPageContainer extends StatelessWidget {
                           fontFamily: "Plus Jakarta Sans",
                         ),
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 6,
+                        maxLines: 5,
                       ),
                     ],
                   ),
