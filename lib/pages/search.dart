@@ -1,6 +1,9 @@
 import 'package:chatperlipopette/components/search_page_container.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/api_scrapper.dart';
+import '../utils/cat.dart';
+
 class Search extends StatefulWidget {
   const Search({super.key});
 
@@ -9,6 +12,7 @@ class Search extends StatefulWidget {
 }
 
 class _SearchState extends State<Search> {
+  late Future<List<Cat>> _futureCats;
   final TextEditingController _searchController = TextEditingController();
   final List<String> _chipsFilters = <String>[
     "Tous",
@@ -18,34 +22,11 @@ class _SearchState extends State<Search> {
   ];
   final _filterSelected = <String>{'Tous'};
 
-  final List<SearchPageContainer> _searchResults = <SearchPageContainer>[
-    SearchPageContainer(
-      title: "Maina Aoon",
-      subtitle: "Le Doux Géant",
-      description:
-          "Originaire des États-Unis, c'est l'une des plus grandes races de chats domestiques. Reconnu pour sa queue en panache et son tempérament amical.",
-      imageUrl:
-          "https://i1.sndcdn.com/artworks-3x6dTuKd6wyI4ebk-UHpthA-t1080x1080.jpg",
-      tags: ["Affectueux", "Grand"],
-    ),
-    SearchPageContainer(
-      title: "Maina Aoon",
-      subtitle: "Le Doux Géant",
-      description:
-          "Originaire des États-Unis, c'est l'une des plus grandes races de chats domestiques. Reconnu pour sa queue en panache et son tempérament amical.",
-      imageUrl: "https://media.tenor.com/3GNN7PT7oeMAAAAe/cat-goofy.png",
-      tags: ["Affectueux", "Grand"],
-    ),
-    SearchPageContainer(
-      title: "Maina Aoon",
-      subtitle: "Le Doux Géant",
-      description:
-          "Originaire des États-Unis, c'est l'une des plus grandes races de chats domestiques. Reconnu pour sa queue en panache et son tempérament amical.",
-      imageUrl:
-          "https://i.redd.it/goofy-ahh-cat-v0-ilon66sme61a1.jpg?width=914&format=pjpg&auto=webp&s=738f9007d5ebd245067278525a9bd30a15bd1a83",
-      tags: ["Affectueux", "Grand"],
-    ),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _futureCats = fetchCatsList(10);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,15 +143,36 @@ class _SearchState extends State<Search> {
               ),
               // Container for the search results
               Expanded(
-                child: ListView.separated(
-                  scrollDirection: Axis.vertical,
-                  separatorBuilder: (BuildContext context, int index) {
-                    return SizedBox(height: 16);
+                child: FutureBuilder(
+                  future: _futureCats,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                      return const Center(child: Text('No cats found'));
+                    } else {
+                      final List<Cat> cats = snapshot.data!;
+                      return ListView.separated(
+                        itemCount: cats.length,
+                        itemBuilder: (context, index) {
+                          final Cat cat = cats[index];
+                          return SearchPageContainer(
+                            title: cat.name,
+                            subtitle: cat.origin,
+                            description: cat.description,
+                            imageUrl:
+                                "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
+                            tags: cat.temperament.split(', '),
+                          );
+                        },
+                        separatorBuilder: (BuildContext context, int index) {
+                          return SizedBox(height: 15);
+                        },
+                      );
+                    }
                   },
-                  itemBuilder: (BuildContext context, int index) {
-                    return _searchResults[index];
-                  },
-                  itemCount: _searchResults.length,
                 ),
               ),
             ],
