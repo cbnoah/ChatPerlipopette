@@ -1,3 +1,4 @@
+import 'package:chatperlipopette/components/app_shell.dart';
 import 'package:chatperlipopette/pages/search.dart';
 import 'package:chatperlipopette/themes/light_theme.dart';
 import 'package:flutter/material.dart';
@@ -18,38 +19,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         // Home page with bottom navigation bar (need to be implemented)
-        '/': (context) => Scaffold(
-          backgroundColor: Colors.white,
-          bottomNavigationBar: BottomNavigationBar(
-            onTap: (index) {
-              switch (index) {
-                case 0:
-                  Navigator.pushNamed(context, '/');
-                  break;
-                case 1:
-                  Navigator.pushNamed(context, '/search');
-                  break;
-              }
-            },
-            items: [
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.search),
-                label: 'Search',
-              ),
-            ],
-          ),
-          body: Center(
-            child: Text(
-              "Bienvenue sur ChatPerlipopette !",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
-        ),
+        '/': (context) => AppShell(),
         '/search': (context) => Search(),
       },
     );
