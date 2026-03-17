@@ -15,15 +15,27 @@ Future<Cat> fetchCat(String id) async {
   }
 }
 
-Future<List<Cat>> fetchCatsList(int limit) async {
+Future<List<Cat>> fetchCatsList([int? limit]) async {
   final response = await http.get(
+    limit == null ?
+    Uri.parse('https://api.thecatapi.com/v1/breeds'):
     Uri.parse('https://api.thecatapi.com/v1/breeds?limit=$limit'),
   );
 
   if (response.statusCode == 200) {
-    return (jsonDecode(response.body) as List<dynamic>)
-        .map((json) => Cat.fromJson(json as Map<String, dynamic>))
-        .toList();
+    final items = jsonDecode(response.body) as List<dynamic>;
+    final cats = <Cat>[];
+
+    for (final item in items) {
+      if (item is! Map<String, dynamic>) continue;
+      try {
+        cats.add(Cat.fromJson(item));
+      } on FormatException {
+        // Ignore invalid records instead of failing the entire response.
+      }
+    }
+
+    return cats;
   } else {
     throw Exception("Failed to load cat data");
   }
