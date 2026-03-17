@@ -14,18 +14,36 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   late Future<List<Cat>> _futureCats;
   final TextEditingController _searchController = TextEditingController();
-  final List<String> _chipsFilters = <String>[
-    "Tous",
-    "Poils longs",
-    "Calme",
-    "Actif",
-  ];
+  Set<String> _chipsFilters = {'Tous'};
   final _filterSelected = <String>{'Tous'};
 
   @override
   void initState() {
     super.initState();
-    _futureCats = fetchCatsList(10);
+    _initCats();
+  }
+
+  Future<void> _initCats() async {
+    final future = fetchCatsList();
+    setState(() {
+      _futureCats = future;
+    });
+
+    final cats = await future;
+    if (!mounted) return;
+
+    final filters = <String>{'Tous'};
+    for (final cat in cats) {
+      filters.addAll(cat.temperament.split(', '));
+    }
+
+    setState(() {
+      _chipsFilters = filters;
+    });
+  }
+
+  Future<void> _pullRefresh() async {
+    _initCats();
   }
 
   @override
@@ -74,7 +92,7 @@ class _SearchState extends State<Search> {
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: Image(
-                      image: AssetImage("icons/search.png"),
+                      image: AssetImage("assets/icons/search.png"),
                       width: 20,
                       height: 20,
                     ),
@@ -95,7 +113,7 @@ class _SearchState extends State<Search> {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
-                    final String filter = _chipsFilters[index];
+                    final String filter = _chipsFilters.elementAt(index);
                     final bool isSelected = _filterSelected.contains(filter);
                     return ChoiceChip(
                       label: Text(
