@@ -1,3 +1,4 @@
+import 'package:chatperlipopette/pages/catsInfos.dart';
 import 'package:chatperlipopette/pages/home.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,7 @@ class MyApp extends StatelessWidget {
         fontFamily: 'Plus Jakarta Sans',
         useMaterial3: true,
       ),
-      home: const Home(),
+      home: const CatsInfos(),
     );
   }
 }
