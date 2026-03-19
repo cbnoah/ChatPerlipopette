@@ -15,12 +15,11 @@ Future<Cat> fetchCat(String id) async {
   }
 }
 
-Future<List<Cat>> fetchCatsList([int? limit]) async {
-  final response = await http.get(
-    limit == null ?
-    Uri.parse('https://api.thecatapi.com/v1/breeds'):
-    Uri.parse('https://api.thecatapi.com/v1/breeds?limit=$limit'),
-  );
+Future<List<Cat>> fetchCatsList({int? limit, String? query}) async {
+  String url = 'https://api.thecatapi.com/v1/breeds?';
+  if (limit != null) url = 'https://api.thecatapi.com/v1/breeds?limit=$limit';
+  if (query != null && query != "") url = 'https://api.thecatapi.com/v1/breeds/search?q=$query';
+  final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
     final items = jsonDecode(response.body) as List<dynamic>;
