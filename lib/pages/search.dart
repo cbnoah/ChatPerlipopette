@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chatperlipopette/components/search_page_container.dart';
 import 'package:flutter/material.dart';
 
@@ -17,10 +19,27 @@ class _SearchState extends State<Search> {
   Set<String> _chipsFilters = {'Tous'};
   final _filterSelected = <String>{'Tous'};
 
+  Timer? _searchDebounce;
+  static const Duration _searchCooldown = Duration(milliseconds: 500);
+
   @override
   void initState() {
     super.initState();
     _initCats();
+  }
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String text) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(_searchCooldown, () {
+      _initCats(text.trim());
+    });
   }
 
   Future<void> _initCats([String? query]) async {
@@ -76,9 +95,9 @@ class _SearchState extends State<Search> {
               // Search Bar
               TextField(
                 controller: _searchController,
-                onChanged: (text) async {
-                  _initCats(text);
+                onChanged: (text) {
                   setState(() {});
+                  _onSearchChanged(text);
                 },
                 style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
