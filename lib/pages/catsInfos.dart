@@ -19,14 +19,17 @@ class CatsInfos extends StatelessWidget {
             )
         ),
         centerTitle: true,
-        leading: Container(
-          margin: EdgeInsets.all(10),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10)
-          ),
-          child: Image.asset(
-              'assets/Icons/Arrow.png'
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Container(
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10)
+            ),
+            child: Image.asset(
+                'assets/icons/Arrow.png'
+            ),
           ),
         ),
       ),
@@ -35,7 +38,7 @@ class CatsInfos extends StatelessWidget {
           children: [
             ClipRect(
               child: Image.asset(
-                'assets/Img/Cat.png',
+                'assets/images/Cat.png',
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 400,
