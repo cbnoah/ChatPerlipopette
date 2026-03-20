@@ -1,3 +1,4 @@
+import 'package:chatperlipopette/pages/home.dart';
 import 'package:chatperlipopette/pages/search.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,7 @@ class _AppShellState extends State<AppShell> {
   int _index = 0;
 
   final _pages = const <Widget>[
-    HomePage(),
+    Home(),
     Search(),
   ];
 
@@ -34,5 +35,3 @@ class _AppShellState extends State<AppShell> {
     );
   }
 }
-
-class HomePage extends StatelessWidget { const HomePage({super.key}); @override Widget build(_) => const Center(child: Text('Home')); }
