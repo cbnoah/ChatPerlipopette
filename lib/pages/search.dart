@@ -89,7 +89,7 @@ class _SearchState extends State<Search> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0),
           child: Column(
             spacing: 10,
             children: [
@@ -234,18 +234,21 @@ class _SearchState extends State<Search> {
                                             .split(',')
                                             .contains(_filterSelected.first)
                                         ? SearchPageContainer(
+                                            id: cat.name,
                                             title: cat.name,
                                             subtitle: cat.origin,
                                             description: cat.description,
                                             imageUrl:
                                                 "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
                                             tags: cat.temperament.split(', '),
-                                            onPressed: () =>
-                                                context.push('/breed/${cat.id}'),
+                                            onPressed: () => context.push(
+                                              '/breed/${cat.id}',
+                                            ),
                                           )
                                         : null;
                                   }
                                   return SearchPageContainer(
+                                    id: cat.id,
                                     title: cat.name,
                                     subtitle: cat.origin,
                                     description: cat.description,

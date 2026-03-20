@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SearchPageContainer extends StatelessWidget {
+  final String id;
   final String title;
   final String subtitle;
   final String description;
@@ -10,6 +11,7 @@ class SearchPageContainer extends StatelessWidget {
 
   const SearchPageContainer({
     super.key,
+    required this.id,
     required this.title,
     required this.subtitle,
     required this.description,
@@ -42,46 +44,49 @@ class SearchPageContainer extends StatelessWidget {
             Column(
               children: [
                 // Image with rounded top corners
-                ClipRRect(
-                  borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-                  clipBehavior: Clip.hardEdge,
-                  child: AspectRatio(
-                    aspectRatio: 2,
-                    child: Image.network(
-                      alignment: FractionalOffset.topCenter,
-                      fit: BoxFit.cover,
-                      imageUrl,
-                      loadingBuilder:
-                          (
-                            BuildContext context,
-                            Widget child,
-                            ImageChunkEvent? loadingProgress,
-                          ) {
-                            if (loadingProgress == null) {
-                              return child;
-                            }
-                            return Center(
-                              child: CircularProgressIndicator(
-                                value:
-                                    loadingProgress.expectedTotalBytes != null
-                                    ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes!
-                                    : null,
-                              ),
-                            );
-                          },
-                      errorBuilder:
-                          (
-                            BuildContext context,
-                            Object exception,
-                            StackTrace? stackTrace,
-                          ) {
-                            return Image.asset(
-                              alignment: FractionalOffset.topCenter,
-                              fit: BoxFit.cover,
-                              'assets/images/image_error.png',
-                            );
-                          },
+                Hero(
+                  tag: id,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                    clipBehavior: Clip.hardEdge,
+                    child: AspectRatio(
+                      aspectRatio: 2,
+                      child: Image.network(
+                        alignment: FractionalOffset.topCenter,
+                        fit: BoxFit.cover,
+                        imageUrl,
+                        loadingBuilder:
+                            (
+                              BuildContext context,
+                              Widget child,
+                              ImageChunkEvent? loadingProgress,
+                            ) {
+                              if (loadingProgress == null) {
+                                return child;
+                              }
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  value:
+                                      loadingProgress.expectedTotalBytes != null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes!
+                                      : null,
+                                ),
+                              );
+                            },
+                        errorBuilder:
+                            (
+                              BuildContext context,
+                              Object exception,
+                              StackTrace? stackTrace,
+                            ) {
+                              return Image.asset(
+                                alignment: FractionalOffset.topCenter,
+                                fit: BoxFit.cover,
+                                'assets/images/image_error.png',
+                              );
+                            },
+                      ),
                     ),
                   ),
                 ),
