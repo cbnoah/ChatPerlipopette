@@ -90,24 +90,27 @@ class _CatsInfosState extends State<CatsInfos> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  ClipRect(
-                    child: Image.network(
-                      "https://cdn2.thecatapi.com/images/${futureCatData.imageRefId}.jpg",
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      height: 400,
-                      errorBuilder:
-                          (
-                            BuildContext context,
-                            Object exception,
-                            StackTrace? stackTrace,
-                          ) {
-                            return Image.asset(
-                              alignment: FractionalOffset.topCenter,
-                              fit: BoxFit.cover,
-                              'assets/images/image_error.png',
-                            );
-                          },
+                  Hero(
+                    tag: widget.id,
+                    child: ClipRect(
+                      child: Image.network(
+                        "https://cdn2.thecatapi.com/images/${futureCatData.imageRefId}.jpg",
+                        fit: BoxFit.cover,
+                        width: double.infinity,
+                        height: 400,
+                        errorBuilder:
+                            (
+                              BuildContext context,
+                              Object exception,
+                              StackTrace? stackTrace,
+                            ) {
+                              return Image.asset(
+                                alignment: FractionalOffset.topCenter,
+                                fit: BoxFit.cover,
+                                'assets/images/image_error.png',
+                              );
+                            },
+                      ),
                     ),
                   ),
                   Padding(
