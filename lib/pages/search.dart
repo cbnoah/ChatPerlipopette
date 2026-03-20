@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatperlipopette/components/search_page_container.dart';
+import 'package:chatperlipopette/pages/catsInfos.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/api_scrapper.dart';
@@ -239,6 +240,14 @@ class _SearchState extends State<Search> {
                                             imageUrl:
                                                 "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
                                             tags: cat.temperament.split(', '),
+                                            onPressed: () => Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        const CatsInfos(),
+                                              ),
+                                            ),
                                           )
                                         : null;
                                   }
@@ -249,6 +258,14 @@ class _SearchState extends State<Search> {
                                     imageUrl:
                                         "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
                                     tags: cat.temperament.split(', '),
+                                    onPressed: () => Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (BuildContext context) =>
+                                        const CatsInfos(),
+                                      ),
+                                    ),
                                   );
                                 },
                                 separatorBuilder:
