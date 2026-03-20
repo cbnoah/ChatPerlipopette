@@ -1,6 +1,8 @@
 import 'package:chatperlipopette/components/app_shell.dart';
 import 'package:chatperlipopette/pages/search.dart';
 import 'package:chatperlipopette/themes/light_theme.dart';
+import 'package:chatperlipopette/pages/catsInfos.dart';
+import 'package:chatperlipopette/pages/home.dart';
 import 'package:flutter/material.dart';
 
 void main() {
