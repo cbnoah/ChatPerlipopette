@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chatperlipopette/components/search_page_container.dart';
 import 'package:flutter/material.dart';
 
@@ -17,14 +19,31 @@ class _SearchState extends State<Search> {
   Set<String> _chipsFilters = {'Tous'};
   final _filterSelected = <String>{'Tous'};
 
+  Timer? _searchDebounce;
+  static const Duration _searchCooldown = Duration(milliseconds: 500);
+
   @override
   void initState() {
     super.initState();
     _initCats();
   }
 
-  Future<void> _initCats() async {
-    final future = fetchCatsList();
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _onSearchChanged(String text) {
+    _searchDebounce?.cancel();
+    _searchDebounce = Timer(_searchCooldown, () {
+      _initCats(text.trim());
+    });
+  }
+
+  Future<void> _initCats([String? query]) async {
+    final future = fetchCatsList(query: query);
     setState(() {
       _futureCats = future;
     });
@@ -76,6 +95,11 @@ class _SearchState extends State<Search> {
               // Search Bar
               TextField(
                 controller: _searchController,
+                onChanged: (text) {
+                  setState(() {});
+                  _onSearchChanged(text);
+                },
+                style: TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                   fillColor: Theme.of(context).colorScheme.onSurface,
                   filled: true,
@@ -97,6 +121,17 @@ class _SearchState extends State<Search> {
                       height: 20,
                     ),
                   ),
+                  suffixIcon: _searchController.text.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            _initCats();
+                            setState(() {
+                              _searchController.text = "";
+                            });
+                          },
+                          icon: Icon(Icons.close),
+                        )
+                      : null,
                   hint: Text(
                     "Recherchez une race",
                     style: TextStyle(
@@ -169,18 +204,44 @@ class _SearchState extends State<Search> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Center(child: CircularProgressIndicator());
                       } else if (snapshot.hasError) {
-                        print(_futureCats);
-                        return Center(child: Text('Error: ${snapshot.error}', style: TextStyle(color: Colors.black),));
+                        return Center(
+                          child: Text(
+                            'Error: ${snapshot.error}',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(child: Text('No cats found'));
+                        return const Center(
+                          child: Text(
+                            'No cats found',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                        );
                       } else {
                         final List<Cat> cats = snapshot.data!;
                         return cats.isEmpty
-                            ? Text("Aucun chat n'a été trouvé")
+                            ? Text(
+                                "Aucun chat n'a été trouvé",
+                                style: TextStyle(color: Colors.black),
+                              )
                             : ListView.separated(
                                 itemCount: cats.length,
                                 itemBuilder: (context, index) {
                                   final Cat cat = cats[index];
+                                  if (_filterSelected.first != "Tous") {
+                                    return cat.temperament
+                                            .split(',')
+                                            .contains(_filterSelected.first)
+                                        ? SearchPageContainer(
+                                            title: cat.name,
+                                            subtitle: cat.origin,
+                                            description: cat.description,
+                                            imageUrl:
+                                                "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
+                                            tags: cat.temperament.split(', '),
+                                          )
+                                        : null;
+                                  }
                                   return SearchPageContainer(
                                     title: cat.name,
                                     subtitle: cat.origin,
