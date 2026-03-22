@@ -1,6 +1,8 @@
+import 'package:chatperlipopette/components/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:go_router/go_router.dart';
 
 import '../utils/api_scrapper.dart';
 import '../utils/cat.dart';
@@ -55,7 +57,13 @@ class _CatsInfosState extends State<CatsInfos> {
         ),
         centerTitle: true,
         leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
+          onTap: () {
+            if (GoRouter.of(context).canPop()) {
+              GoRouter.of(context).pop();
+            } else {
+              GoRouter.of(context).go('/');
+            }
+          },
           child: Container(
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
