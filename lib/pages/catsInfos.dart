@@ -1,8 +1,8 @@
-import 'package:chatperlipopette/components/app_shell.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../utils/api_scrapper.dart';
 import '../utils/cat.dart';
@@ -73,6 +73,22 @@ class _CatsInfosState extends State<CatsInfos> {
             child: Image.asset('assets/icons/Arrow.png'),
           ),
         ),
+        actions: [
+          GestureDetector(
+            onTap: () => SharePlus.instance.share(ShareParams(uri: Uri.parse("chatperlipopette:/breed/${widget.id}"))),
+            child: Container(
+              margin: EdgeInsets.only(top: 0, right: 10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Icon(Icons.share, color: Colors.black,),
+              ),
+            ),
+          ),
+        ],
       ),
       body: FutureBuilder(
         future: _cat,
