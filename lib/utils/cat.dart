@@ -11,6 +11,8 @@ class Cat {
   final int affectionLevel;
   final int energyLevel;
   final int intelligence;
+  final double? latitude;
+  final double? longitude;
 
   Cat({
     required this.name,
@@ -23,7 +25,10 @@ class Cat {
     required this.dogFriendly,
     required this.affectionLevel,
     required this.energyLevel,
-    required this.intelligence, required this.id,
+    required this.intelligence,
+    required this.id,
+    this.latitude,
+    this.longitude,
   });
 
   factory Cat.fromJson(Map<String, dynamic> json) {
