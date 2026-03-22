@@ -31,15 +31,13 @@
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data
-                    android:host="chatperlipopette.com"
-                    android:pathPrefix="/breed"
-                    android:scheme="https" />
+                    android:scheme="chatperlipopette"
+                    android:pathPrefix="/breed" />
             </intent-filter>
+
 
             <meta-data
                 android:name="io.flutter.embedding.android.NormalTheme"
