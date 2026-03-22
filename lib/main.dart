@@ -20,18 +20,14 @@ final router = GoRouter(
         return CatsInfos(id: id);
       },
     ),
-    // W.I.P, Need to be implemented for the map, the same way as the breed
-    /*
-    GoRoute(
-      path: '/breed/:id/map',
-      builder: (context, state) {
-        final id = state.pathParameters['id']!;
-        return CatMap(id: id);
-      },
-    ),
-     */
   ],
-  initialLocation: '/'
+  initialLocation: '/',
+  redirect: (context, state) {
+    if (state.uri.scheme == 'chatperlipopette' || state.uri.scheme == 'https') {
+      return null;
+    }
+    return null;
+  },
 );
 
 class MyApp extends StatelessWidget {
