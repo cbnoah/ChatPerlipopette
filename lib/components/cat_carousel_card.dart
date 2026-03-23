@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CatCarouselCard extends StatelessWidget {
+  final String id;
   final String name;
   final String description;
   final String imagePath;
   final BuildContext context;
 
   const CatCarouselCard({
+    super.key,
     required this.name,
     required this.description,
     required this.imagePath,
     required this.context,
+    required this.id,
   });
 
   @override
@@ -30,9 +34,11 @@ class CatCarouselCard extends StatelessWidget {
       child: Column(
         children: [
           Hero(
-            tag: name,
+            tag: id,
             child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
               child: Image.network(
                 imagePath,
                 fit: BoxFit.cover,
@@ -70,7 +76,7 @@ class CatCarouselCard extends StatelessWidget {
                     width: double.infinity,
                     height: 40,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => context.push('/breed/$id'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
                         foregroundColor: Colors.white,
