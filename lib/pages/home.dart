@@ -6,12 +6,12 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(
           'Découvrez nos coups de coeur',
           style: TextStyle(
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onInverseSurface,
             fontSize: 25,
             fontWeight: FontWeight.bold,
           ),
@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
                 Text(
                   'Trouvez le compagnon idéal selon votre style de vie.',
                   style: TextStyle(
-                    color: Colors.grey,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                     fontSize: 15,
                   ),
                 ),
@@ -37,7 +37,7 @@ class Home extends StatelessWidget {
                   child: Text(
                     'Pour les familles',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.onInverseSurface,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
                     children: [
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
@@ -81,9 +81,10 @@ class Home extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Maine Coon',
                                       style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onInverseSurface,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -93,7 +94,7 @@ class Home extends StatelessWidget {
                                       'Le géant doux parfait pour les enfants.',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
@@ -110,11 +111,12 @@ class Home extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(8),
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'En savoir plus',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
+                                            color: Theme.of(context).colorScheme.onSurface
                                           ),
                                         ),
                                       ),
@@ -129,7 +131,7 @@ class Home extends StatelessWidget {
                       // Deuxième container
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
@@ -156,9 +158,10 @@ class Home extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Maine coon',
+                                    Text(
+                                      'Maine Coon',
                                       style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onInverseSurface,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -168,7 +171,7 @@ class Home extends StatelessWidget {
                                       'Le géant doux parfait pour les enfants.',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
@@ -185,11 +188,12 @@ class Home extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(8),
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'En savoir plus',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
+                                            color: Theme.of(context).colorScheme.onSurface
                                           ),
                                         ),
                                       ),
@@ -203,7 +207,7 @@ class Home extends StatelessWidget {
                       ),
                       Container(
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.onSurface,
                           borderRadius: BorderRadius.circular(12),
                           boxShadow: [
                             BoxShadow(
@@ -230,9 +234,10 @@ class Home extends StatelessWidget {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
-                                      'Maine coon',
+                                    Text(
+                                      'Maine Coon',
                                       style: TextStyle(
+                                        color: Theme.of(context).colorScheme.onInverseSurface,
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -242,7 +247,7 @@ class Home extends StatelessWidget {
                                       'Le géant doux parfait pour les enfants.',
                                       style: TextStyle(
                                         fontSize: 14,
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                     const SizedBox(height: 10),
@@ -259,11 +264,12 @@ class Home extends StatelessWidget {
                                             borderRadius: BorderRadius.circular(8),
                                           ),
                                         ),
-                                        child: const Text(
+                                        child: Text(
                                           'En savoir plus',
                                           style: TextStyle(
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
+                                            color: Theme.of(context).colorScheme.onSurface
                                           ),
                                         ),
                                       ),
@@ -285,7 +291,7 @@ class Home extends StatelessWidget {
                   child: Text(
                     'Calmes & Affectueux',
                     style: TextStyle(
-                      color: Colors.black,
+                      color: Theme.of(context).colorScheme.onInverseSurface,
                       fontWeight: FontWeight.bold,
                       fontSize: 20,
                     ),
@@ -296,7 +302,7 @@ class Home extends StatelessWidget {
                   height: 140,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSurface,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
@@ -330,11 +336,12 @@ class Home extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Scottish Fold',
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).colorScheme.onInverseSurface
                                       ),
                                     ),
                                     const SizedBox(height: 4),
@@ -342,7 +349,7 @@ class Home extends StatelessWidget {
                                       'Un tempérament paisible et indépendant.',
                                       style: TextStyle(
                                         fontSize: 13,
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                   ],
@@ -352,8 +359,8 @@ class Home extends StatelessWidget {
                                   child: ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange,
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: Theme.of(context).colorScheme.primary,
+                                      foregroundColor: Theme.of(context).colorScheme.onSurface,
                                       padding: const EdgeInsets.symmetric(vertical: 10),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6),
@@ -381,7 +388,7 @@ class Home extends StatelessWidget {
                   height: 140,
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSurface,
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
@@ -415,11 +422,12 @@ class Home extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Persan',
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
+                                        color: Theme.of(context).colorScheme.onInverseSurface
                                       ),
                                     ),
                                     const SizedBox(height: 4),
@@ -427,7 +435,7 @@ class Home extends StatelessWidget {
                                       'La quintessence du chat de salon',
                                       style: TextStyle(
                                         fontSize: 13,
-                                        color: Colors.grey[600],
+                                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                                       ),
                                     ),
                                   ],
@@ -437,8 +445,8 @@ class Home extends StatelessWidget {
                                   child: ElevatedButton(
                                     onPressed: () {},
                                     style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.orange,
-                                      foregroundColor: Colors.white,
+                                      backgroundColor: Theme.of(context).colorScheme.primary,
+                                      foregroundColor: Theme.of(context).colorScheme.onSurface,
                                       padding: const EdgeInsets.symmetric(vertical: 10),
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(6),
