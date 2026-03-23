@@ -9,8 +9,12 @@ class SearchResults extends StatefulWidget {
   final Future<List<Cat>> futureCats;
   final Set<String> filterSelected;
 
-  const SearchResults(
-      {super.key, required this.pullRefresh, required this.futureCats, required this.filterSelected});
+  const SearchResults({
+    super.key,
+    required this.pullRefresh,
+    required this.futureCats,
+    required this.filterSelected,
+  });
 
   @override
   State<SearchResults> createState() => _SearchResultsState();
@@ -18,9 +22,18 @@ class SearchResults extends StatefulWidget {
 
 class _SearchResultsState extends State<SearchResults> {
   RefreshCallback get _pullRefresh => widget.pullRefresh;
+
   Future<List<Cat>> get _futureCats => widget.futureCats;
+
   Set<String> get _filterSelected => widget.filterSelected;
 
+  List<String> _normalizedTags(String temperament) {
+    return temperament
+        .split(',')
+        .map((tag) => tag.trim().toLowerCase())
+        .where((tag) => tag.isNotEmpty)
+        .toList();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,48 +61,47 @@ class _SearchResultsState extends State<SearchResults> {
               );
             } else {
               final List<Cat> cats = snapshot.data!;
-              return cats.isEmpty
-                  ? Text(
-                "Aucun chat n'a été trouvé",
-                style: TextStyle(color: Colors.black),
-              )
-                  : ListView.separated(
-                itemCount: cats.length,
+              final String activeFilter = _filterSelected.isEmpty
+                  ? 'tous'
+                  : _filterSelected.first.trim().toLowerCase();
+              final List<Cat> visibleCats = activeFilter == 'tous'
+                  ? cats
+                  : cats
+                      .where(
+                        (cat) => _normalizedTags(cat.temperament)
+                            .contains(activeFilter),
+                      )
+                      .toList();
+
+              if (visibleCats.isEmpty) {
+                return const Center(
+                  child: Text(
+                    "Aucun chat n'a ete trouve",
+                    style: TextStyle(color: Colors.black),
+                  ),
+                );
+              }
+
+              return ListView.separated(
+                itemCount: visibleCats.length,
                 itemBuilder: (context, index) {
-                  final Cat cat = cats[index];
-                  if (_filterSelected.first != "Tous") {
-                    return cat.temperament
-                        .split(',')
-                        .contains(_filterSelected.first)
-                        ? SearchPageContainer(
-                      id: cat.name,
-                      title: cat.name,
-                      subtitle: cat.origin,
-                      description: cat.description,
-                      imageUrl:
-                      "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
-                      tags: cat.temperament.split(', '),
-                      onPressed: () =>
-                          context.push(
-                            '/breed/${cat.id}',
-                          ),
-                    )
-                        : null;
-                  }
+                  final Cat cat = visibleCats[index];
                   return SearchPageContainer(
                     id: cat.id,
                     title: cat.name,
                     subtitle: cat.origin,
                     description: cat.description,
                     imageUrl:
-                    "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
-                    tags: cat.temperament.split(', '),
-                    onPressed: () =>
-                        context.push('/breed/${cat.id}'),
+                        "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
+                    tags: cat.temperament
+                        .split(',')
+                        .map((tag) => tag.trim())
+                        .where((tag) => tag.isNotEmpty)
+                        .toList(),
+                    onPressed: () => context.push('/breed/${cat.id}'),
                   );
                 },
-                separatorBuilder:
-                    (BuildContext context, int index) {
+                separatorBuilder: (BuildContext context, int index) {
                   return SizedBox(height: 15);
                 },
               );
