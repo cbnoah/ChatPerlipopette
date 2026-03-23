@@ -1,5 +1,6 @@
 import 'package:chatperlipopette/components/app_shell.dart';
 import 'package:chatperlipopette/pages/catsInfos.dart';
+import 'package:chatperlipopette/themes/dark_theme.dart';
 import 'package:chatperlipopette/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -38,7 +39,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
+      darkTheme: darkTheme,
       theme: lightTheme,
+      themeMode: ThemeMode.system,
       routerConfig: router,
     );
   }
