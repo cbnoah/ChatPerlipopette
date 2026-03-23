@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chatperlipopette/components/search_page_container.dart';
+import 'package:chatperlipopette/components/search_results.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -196,78 +197,10 @@ class _SearchState extends State<Search> {
                 ),
               ),
               // Container for the search results
-              Expanded(
-                child: RefreshIndicator(
-                  onRefresh: () => _pullRefresh(),
-                  child: FutureBuilder(
-                    future: _futureCats,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: CircularProgressIndicator());
-                      } else if (snapshot.hasError) {
-                        return Center(
-                          child: Text(
-                            'Error: ${snapshot.error}',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                        return const Center(
-                          child: Text(
-                            'No cats found',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      } else {
-                        final List<Cat> cats = snapshot.data!;
-                        return cats.isEmpty
-                            ? Text(
-                                "Aucun chat n'a été trouvé",
-                                style: TextStyle(color: Colors.black),
-                              )
-                            : ListView.separated(
-                                itemCount: cats.length,
-                                itemBuilder: (context, index) {
-                                  final Cat cat = cats[index];
-                                  if (_filterSelected.first != "Tous") {
-                                    return cat.temperament
-                                            .split(',')
-                                            .contains(_filterSelected.first)
-                                        ? SearchPageContainer(
-                                            id: cat.name,
-                                            title: cat.name,
-                                            subtitle: cat.origin,
-                                            description: cat.description,
-                                            imageUrl:
-                                                "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
-                                            tags: cat.temperament.split(', '),
-                                            onPressed: () => context.push(
-                                              '/breed/${cat.id}',
-                                            ),
-                                          )
-                                        : null;
-                                  }
-                                  return SearchPageContainer(
-                                    id: cat.id,
-                                    title: cat.name,
-                                    subtitle: cat.origin,
-                                    description: cat.description,
-                                    imageUrl:
-                                        "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
-                                    tags: cat.temperament.split(', '),
-                                    onPressed: () =>
-                                        context.push('/breed/${cat.id}'),
-                                  );
-                                },
-                                separatorBuilder:
-                                    (BuildContext context, int index) {
-                                      return SizedBox(height: 15);
-                                    },
-                              );
-                      }
-                    },
-                  ),
-                ),
+              SearchResults(
+                pullRefresh: () => _pullRefresh(),
+                futureCats: _futureCats,
+                filterSelected: _filterSelected,
               ),
             ],
           ),
