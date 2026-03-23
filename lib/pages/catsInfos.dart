@@ -322,77 +322,65 @@ class _CatsInfosState extends State<CatsInfos> {
                           borderRadius: BorderRadius.circular(12),
                           child: Container(
                             height: 300,
-                            child: FlutterMap(
-                              options: MapOptions(
-                                initialCenter: LatLng(45.5017, -69.1411),
-                                initialZoom: 6,
-                              ),
-                              children: [
-                                TileLayer(
-                                  urlTemplate:
-                                      'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-                                  subdomains: const ['a', 'b', 'c'],
-                                ),
-                                MarkerLayer(
-                                  markers: [
-                                    Marker(
-                                      point: LatLng(45.5017, -69.1411),
-                                      width: 80,
-                                      height: 80,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.orange,
-                                              borderRadius:
-                                                  BorderRadius.circular(50),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withValues(alpha: 0.3),
-                                                  blurRadius: 4,
-                                                ),
-                                              ],
+                            child: futureCatData.latitude != null &&
+                                    futureCatData.longitude != null
+                                ? FlutterMap(
+                                    options: MapOptions(
+                                      initialCenter: LatLng(
+                                        futureCatData.latitude!,
+                                        futureCatData.longitude!,
+                                      ),
+                                      initialZoom: 5,
+                                    ),
+                                    children: [
+                                      TileLayer(
+                                        urlTemplate:
+                                            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                                        subdomains: const ['a', 'b', 'c'],
+                                      ),
+                                      MarkerLayer(
+                                        markers: [
+                                          Marker(
+                                            point: LatLng(
+                                              futureCatData.latitude!,
+                                              futureCatData.longitude!,
                                             ),
-                                            padding: EdgeInsets.all(8),
-                                            child: Icon(
-                                              Icons.location_on,
-                                              color: Colors.white,
-                                              size: 30,
-                                            ),
-                                          ),
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              color: Colors.white,
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Colors.black
-                                                      .withValues(alpha: 0.2),
-                                                  blurRadius: 2,
-                                                ),
-                                              ],
-                                            ),
-                                            padding: EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 3,
-                                            ),
-                                            child: Text(
-                                              'Maine, USA',
-                                              style: TextStyle(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.bold,
+                                            width: 40,
+                                            height: 40,
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.orange,
+                                                borderRadius:
+                                                    BorderRadius.circular(50),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black
+                                                        .withValues(alpha: 0.3),
+                                                    blurRadius: 4,
+                                                  ),
+                                                ],
+                                              ),
+                                              padding: EdgeInsets.all(8),
+                                              child: Icon(
+                                                Icons.location_on,
+                                                color: Colors.white,
+                                                size: 20,
                                               ),
                                             ),
                                           ),
                                         ],
                                       ),
+                                    ],
+                                  )
+                                : Center(
+                                    child: Text(
+                                      'Localisation non disponible',
+                                      style: TextStyle(
+                                        color: Colors.grey[700],
+                                        fontSize: 14,
+                                      ),
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  ),
                           ),
                         ),
                       ],
