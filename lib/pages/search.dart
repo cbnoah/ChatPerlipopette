@@ -1,9 +1,7 @@
 import 'dart:async';
 
-import 'package:chatperlipopette/components/search_page_container.dart';
 import 'package:chatperlipopette/components/search_results.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 
 import '../utils/api_scrapper.dart';
 import '../utils/cat.dart';
@@ -101,7 +99,7 @@ class _SearchState extends State<Search> {
                   setState(() {});
                   _onSearchChanged(text);
                 },
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface),
                 decoration: InputDecoration(
                   fillColor: Theme.of(context).colorScheme.onSurface,
                   filled: true,
