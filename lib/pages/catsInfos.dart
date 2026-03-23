@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../utils/api_scrapper.dart';
 import '../utils/cat.dart';
+import '../components/cat_image_hero.dart';
+import '../components/cat_header_section.dart';
+import '../components/cat_attributes_section.dart';
+import '../components/cat_temperament_section.dart';
+import '../components/cat_physical_characteristics_section.dart';
+import '../components/cat_care_advice_section.dart';
+import '../components/cat_origin_map_section.dart';
 
 class CatsInfos extends StatefulWidget {
   final String id;
@@ -66,23 +71,23 @@ class _CatsInfosState extends State<CatsInfos> {
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  _CatImageHero(catId: widget.id, imageRefId: cat.imageRefId),
+                  CatImageHero(catId: widget.id, imageRefId: cat.imageRefId),
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _CatHeaderSection(cat: cat),
+                        CatHeaderSection(cat: cat),
                         SizedBox(height: 25),
-                        _AttributesSection(cat: cat),
+                        CatAttributesSection(cat: cat),
                         SizedBox(height: 25),
-                        _TemperamentSection(cat: cat),
+                        CatTemperamentSection(cat: cat),
                         SizedBox(height: 25),
-                        _PhysicalCharacteristicsSection(cat: cat),
+                        CatPhysicalCharacteristicsSection(cat: cat),
                         SizedBox(height: 25),
-                        _CareAdviceSection(),
+                        CatCareAdviceSection(),
                         SizedBox(height: 25),
-                        _OriginMapSection(cat: cat),
+                        CatOriginMapSection(cat: cat),
                       ],
                     ),
                   ),
@@ -154,355 +159,3 @@ class _CatsInfosState extends State<CatsInfos> {
   }
 }
 
-class _CatImageHero extends StatelessWidget {
-  final String catId;
-  final String imageRefId;
-
-  const _CatImageHero({required this.catId, required this.imageRefId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Hero(
-      tag: catId,
-      child: ClipRect(
-        child: Image.network(
-          "https://cdn2.thecatapi.com/images/$imageRefId.jpg",
-          fit: BoxFit.cover,
-          width: double.infinity,
-          height: 400,
-          errorBuilder:
-              (BuildContext context, Object exception, StackTrace? stackTrace) {
-                return Image.asset(
-                  alignment: FractionalOffset.topCenter,
-                  fit: BoxFit.cover,
-                  'assets/images/image_error.png',
-                );
-              },
-        ),
-      ),
-    );
-  }
-}
-
-class _CatHeaderSection extends StatelessWidget {
-  final Cat cat;
-
-  const _CatHeaderSection({required this.cat});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                cat.name,
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                ),
-              ),
-              SizedBox(height: 8),
-              Row(
-                children: [
-                  Icon(Icons.location_on, color: Color(0xFFFF9500), size: 18),
-                  SizedBox(width: 5),
-                  Text(
-                    cat.origin,
-                    style: TextStyle(color: Color(0xFFFF9500), fontSize: 14),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        Icon(Icons.favorite_border, color: Color(0xFFFF9500), size: 28),
-      ],
-    );
-  }
-}
-
-class _AttributesSection extends StatelessWidget {
-  final Cat cat;
-
-  const _AttributesSection({required this.cat});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      spacing: 5.0,
-      children: [
-        _AttributeCard(
-          emoji: '❤︎',
-          label: 'Affection',
-          value: '${cat.affectionLevel}/5',
-        ),
-        _AttributeCard(
-          emoji: '⚡︎',
-          label: 'Énergie',
-          value: '${cat.energyLevel}/5',
-        ),
-        _AttributeCard(
-          emoji: '🧠',
-          label: 'Intelligence',
-          value: '${cat.intelligence}/5',
-        ),
-      ],
-    );
-  }
-}
-
-class _AttributeCard extends StatelessWidget {
-  final String emoji;
-  final String label;
-  final String value;
-
-  const _AttributeCard({
-    required this.emoji,
-    required this.label,
-    required this.value,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.onSurface,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: Column(
-          children: [
-            Text(emoji, style: TextStyle(fontSize: 28)),
-            SizedBox(height: 8),
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
-            ),
-            SizedBox(height: 5),
-            Text(
-              value,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.onInverseSurface,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _TemperamentSection extends StatelessWidget {
-  final Cat cat;
-
-  const _TemperamentSection({required this.cat});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Tempérament',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onInverseSurface,
-          ),
-        ),
-        SizedBox(height: 12),
-        Text(
-          cat.description,
-          style: TextStyle(
-            fontSize: 14,
-            color: Theme.of(context).colorScheme.onSurfaceVariant,
-            height: 1.6,
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _PhysicalCharacteristicsSection extends StatelessWidget {
-  final Cat cat;
-
-  const _PhysicalCharacteristicsSection({required this.cat});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Caractéristiques physiques',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onInverseSurface,
-          ),
-        ),
-        SizedBox(height: 12),
-        Container(
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface,
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Poids',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                ),
-              ),
-              Text(
-                '${cat.metric} kg',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).colorScheme.onInverseSurface,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _CareAdviceSection extends StatelessWidget {
-  const _CareAdviceSection();
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Conseils de soin',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onInverseSurface,
-          ),
-        ),
-        SizedBox(height: 12),
-        Container(
-          padding: EdgeInsets.all(15),
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.onSurface,
-            borderRadius: BorderRadius.circular(12),
-            border: Border(
-              left: BorderSide(
-                color: Theme.of(context).colorScheme.primary,
-                width: 4,
-              ),
-            ),
-          ),
-          child: Text(
-            'Un brossage hebdomadaire est essentiel pour éviter les nœuds dans leur fourrure dense. Pendant la mue, un brossage quotidien est recommandé.',
-            style: TextStyle(
-              fontSize: 14,
-              color: Theme.of(context).colorScheme.onInverseSurface,
-              height: 1.6,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _OriginMapSection extends StatelessWidget {
-  final Cat cat;
-
-  const _OriginMapSection({required this.cat});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Origine',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.onInverseSurface,
-          ),
-        ),
-        SizedBox(height: 12),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: SizedBox(
-            height: 300,
-            child: cat.latitude != null && cat.longitude != null
-                ? FlutterMap(
-                    options: MapOptions(
-                      initialCenter: LatLng(cat.latitude!, cat.longitude!),
-                      initialZoom: 5,
-                    ),
-                    children: [
-                      TileLayer(
-                        urlTemplate:
-                            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-                        subdomains: const ['a', 'b', 'c'],
-                      ),
-                      MarkerLayer(
-                        markers: [
-                          Marker(
-                            point: LatLng(cat.latitude!, cat.longitude!),
-                            width: 40,
-                            height: 40,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.orange,
-                                borderRadius: BorderRadius.circular(50),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.3),
-                                    blurRadius: 4,
-                                  ),
-                                ],
-                              ),
-                              padding: EdgeInsets.all(8),
-                              child: Icon(
-                                Icons.location_on,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )
-                : Center(
-                    child: Text(
-                      'Localisation non disponible',
-                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
-                    ),
-                  ),
-          ),
-        ),
-      ],
-    );
-  }
-}
