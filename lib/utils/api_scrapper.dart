@@ -4,7 +4,7 @@ import "package:chatperlipopette/utils/cat.dart";
 import "package:geocoding/geocoding.dart";
 import "package:http/http.dart" as http;
 
-// Mapping de secours pour les pays courants
+// Fallback mapping of common country names to their approximate coordinates (latitude and longitude)
 final Map<String, Map<String, double>> _countryCoordinates = {
   'abyssinian': {'latitude': 9.1450, 'longitude': 40.4897}, // Ethiopia
   'afghanistan': {'latitude': 33.9391, 'longitude': 67.3999},
@@ -113,7 +113,7 @@ Future<Map<String, double?>> getCoordinatesFromOrigin(String origin) async {
       return {'latitude': null, 'longitude': null};
     }
 
-    // Essayer le géocodage d'abord
+    // Try geocoding the full origin string first
     try {
       List<Location> locations = await locationFromAddress(origin);
       if (locations.isNotEmpty) {
@@ -123,10 +123,10 @@ Future<Map<String, double?>> getCoordinatesFromOrigin(String origin) async {
         };
       }
     } catch (e) {
-      // Le géocodage a échoué, essayer le mapping de secours
+      // Geocoding failed, we'll try the fallback mapping
     }
 
-    // Utiliser le mapping de secours si le géocodage échoue
+    // Using fallback mapping for common country names
     final originLower = origin.toLowerCase().trim();
     if (_countryCoordinates.containsKey(originLower)) {
       final coords = _countryCoordinates[originLower]!;
@@ -136,7 +136,7 @@ Future<Map<String, double?>> getCoordinatesFromOrigin(String origin) async {
       };
     }
 
-    // Chercher une correspondance partielle
+    // Look for partial matches in the fallback mapping
     for (final key in _countryCoordinates.keys) {
       if (originLower.contains(key) || key.contains(originLower)) {
         final coords = _countryCoordinates[key]!;
@@ -147,7 +147,7 @@ Future<Map<String, double?>> getCoordinatesFromOrigin(String origin) async {
       }
     }
   } catch (e) {
-    // Erreur lors du géocodage - coordonnées non disponibles
+    // Error handling: log the error and return null coordinates
     print('Erreur de géocodage pour "$origin": $e');
   }
   return {'latitude': null, 'longitude': null};
@@ -161,7 +161,7 @@ Future<Cat> fetchCat(String id) async {
   if (response.statusCode == 200) {
     final catJson = Cat.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
     
-    // Récupérer les coordonnées à partir de l'origine
+    // Get coordinates for the cat's origin
     final coords = await getCoordinatesFromOrigin(catJson.origin);
     
     return Cat(

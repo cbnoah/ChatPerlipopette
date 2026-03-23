@@ -28,6 +28,7 @@ class _SearchResultsState extends State<SearchResults> {
   Set<String> get _filterSelected => widget.filterSelected;
 
   List<String> _normalizedTags(String temperament) {
+    // Normalize temperament tags by trimming whitespace and converting to lowercase
     return temperament
         .split(',')
         .map((tag) => tag.trim().toLowerCase())
@@ -41,6 +42,7 @@ class _SearchResultsState extends State<SearchResults> {
       child: RefreshIndicator(
         onRefresh: _pullRefresh,
         child: FutureBuilder(
+          // Build the UI based on the state of the future that fetches the list of cats
           future: _futureCats,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -49,14 +51,14 @@ class _SearchResultsState extends State<SearchResults> {
               return Center(
                 child: Text(
                   'Error: ${snapshot.error}',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface),
                 ),
               );
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(
+              return Center(
                 child: Text(
                   'No cats found',
-                  style: TextStyle(color: Colors.black),
+                  style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface),
                 ),
               );
             } else {
@@ -74,10 +76,10 @@ class _SearchResultsState extends State<SearchResults> {
                       .toList();
 
               if (visibleCats.isEmpty) {
-                return const Center(
+                return Center(
                   child: Text(
                     "Aucun chat n'a ete trouve",
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: Theme.of(context).colorScheme.onInverseSurface),
                   ),
                 );
               }

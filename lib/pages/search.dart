@@ -20,6 +20,7 @@ class _SearchState extends State<Search> {
   final _filterSelected = <String>{'Tous'};
 
   Timer? _searchDebounce;
+  // Cooldown duration for search debounce
   static const Duration _searchCooldown = Duration(milliseconds: 500);
 
   @override
@@ -43,6 +44,7 @@ class _SearchState extends State<Search> {
   }
 
   Future<void> _initCats([String? query]) async {
+    // Fetch cats based on the search query and update the future and filters
     final future = fetchCatsList(query: query);
     setState(() {
       _futureCats = future;
@@ -62,6 +64,7 @@ class _SearchState extends State<Search> {
   }
 
   Future<void> _pullRefresh() async {
+    // Refresh the cats list, keeping the current search query and filters
     _initCats();
   }
 
