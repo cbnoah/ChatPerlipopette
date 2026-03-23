@@ -1,6 +1,7 @@
 import 'package:chatperlipopette/pages/home.dart';
 import 'package:chatperlipopette/pages/search.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 
 class AppShell extends StatefulWidget {
   const AppShell({super.key});
@@ -11,6 +12,26 @@ class AppShell extends StatefulWidget {
 
 class _AppShellState extends State<AppShell> {
   int _index = 0;
+  late AudioPlayer _audioPlayer;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeAudio();
+  }
+
+  Future<void> _initializeAudio() async {
+    _audioPlayer = AudioPlayer ();
+    await _audioPlayer.setAsset('assets/sounds/Moew.mp3');
+    await _audioPlayer.play();
+  }
+
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
 
   final _pages = const <Widget>[
     Home(),
