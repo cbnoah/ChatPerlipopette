@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CatCarouselCard extends StatelessWidget {
+  final String id;
   final String name;
   final String description;
   final String imagePath;
   final BuildContext context;
 
   const CatCarouselCard({
+    super.key,
     required this.name,
     required this.description,
     required this.imagePath,
     required this.context,
+    required this.id,
   });
 
   @override
@@ -29,13 +33,18 @@ class CatCarouselCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 180,
+          Hero(
+            tag: id,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
+              child: Image.network(
+                imagePath,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 180,
+              ),
             ),
           ),
           Expanded(
@@ -58,14 +67,16 @@ class CatCarouselCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    maxLines: 3,
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
                     width: double.infinity,
                     height: 40,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () => context.push('/breed/$id'),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.orange,
                         foregroundColor: Colors.white,
@@ -93,4 +104,3 @@ class CatCarouselCard extends StatelessWidget {
     );
   }
 }
-
