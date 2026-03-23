@@ -36,7 +36,7 @@ class _CatsInfosState extends State<CatsInfos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: _buildAppBar(),
       body: FutureBuilder(
         future: _cat,
@@ -47,14 +47,18 @@ class _CatsInfosState extends State<CatsInfos> {
             return Center(
               child: Text(
                 'Error: ${asyncSnapshot.error}',
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onInverseSurface,
+                ),
               ),
             );
           } else if (!asyncSnapshot.hasData) {
-            return const Center(
+            return Center(
               child: Text(
                 "This cat hasn't been found",
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onInverseSurface,
+                ),
               ),
             );
           } else {
@@ -102,7 +106,7 @@ class _CatsInfosState extends State<CatsInfos> {
             return Text(
               asyncSnapshot.data!.name,
               style: TextStyle(
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onInverseSurface,
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
               ),
@@ -130,7 +134,9 @@ class _CatsInfosState extends State<CatsInfos> {
       ),
       actions: [
         GestureDetector(
-          onTap: () => SharePlus.instance.share(ShareParams(uri: Uri.parse("chatperlipopette:/breed/${widget.id}"))),
+          onTap: () => SharePlus.instance.share(
+            ShareParams(uri: Uri.parse("chatperlipopette:/breed/${widget.id}")),
+          ),
           child: Container(
             margin: EdgeInsets.only(top: 0, right: 10),
             decoration: BoxDecoration(
@@ -139,7 +145,7 @@ class _CatsInfosState extends State<CatsInfos> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(5.0),
-              child: Icon(Icons.share, color: Colors.black,),
+              child: Icon(Icons.share, color: Colors.black),
             ),
           ),
         ),
@@ -164,13 +170,14 @@ class _CatImageHero extends StatelessWidget {
           fit: BoxFit.cover,
           width: double.infinity,
           height: 400,
-          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-            return Image.asset(
-              alignment: FractionalOffset.topCenter,
-              fit: BoxFit.cover,
-              'assets/images/image_error.png',
-            );
-          },
+          errorBuilder:
+              (BuildContext context, Object exception, StackTrace? stackTrace) {
+                return Image.asset(
+                  alignment: FractionalOffset.topCenter,
+                  fit: BoxFit.cover,
+                  'assets/images/image_error.png',
+                );
+              },
         ),
       ),
     );
@@ -196,35 +203,24 @@ class _CatHeaderSection extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onInverseSurface,
                 ),
               ),
               SizedBox(height: 8),
               Row(
                 children: [
-                  Icon(
-                    Icons.location_on,
-                    color: Color(0xFFFF9500),
-                    size: 18,
-                  ),
+                  Icon(Icons.location_on, color: Color(0xFFFF9500), size: 18),
                   SizedBox(width: 5),
                   Text(
                     cat.origin,
-                    style: TextStyle(
-                      color: Color(0xFFFF9500),
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: Color(0xFFFF9500), fontSize: 14),
                   ),
                 ],
               ),
             ],
           ),
         ),
-        Icon(
-          Icons.favorite_border,
-          color: Color(0xFFFF9500),
-          size: 28,
-        ),
+        Icon(Icons.favorite_border, color: Color(0xFFFF9500), size: 28),
       ],
     );
   }
@@ -239,6 +235,7 @@ class _AttributesSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      spacing: 5.0,
       children: [
         _AttributeCard(
           emoji: '❤︎',
@@ -277,7 +274,7 @@ class _AttributeCard extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
         decoration: BoxDecoration(
-          color: Color(0xFFFFF5E6),
+          color: Theme.of(context).colorScheme.onSurface,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -286,7 +283,10 @@ class _AttributeCard extends StatelessWidget {
             SizedBox(height: 8),
             Text(
               label,
-              style: TextStyle(fontSize: 12, color: Colors.grey[700]),
+              style: TextStyle(
+                fontSize: 12,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
             ),
             SizedBox(height: 5),
             Text(
@@ -294,7 +294,7 @@ class _AttributeCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: Theme.of(context).colorScheme.onInverseSurface,
               ),
             ),
           ],
@@ -319,7 +319,7 @@ class _TemperamentSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onInverseSurface,
           ),
         ),
         SizedBox(height: 12),
@@ -327,7 +327,7 @@ class _TemperamentSection extends StatelessWidget {
           cat.description,
           style: TextStyle(
             fontSize: 14,
-            color: Colors.grey[700],
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
             height: 1.6,
           ),
         ),
@@ -351,14 +351,14 @@ class _PhysicalCharacteristicsSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onInverseSurface,
           ),
         ),
         SizedBox(height: 12),
         Container(
           padding: EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: Color(0xFFFFF5E6),
+            color: Theme.of(context).colorScheme.onSurface,
             borderRadius: BorderRadius.circular(12),
           ),
           child: Row(
@@ -368,7 +368,7 @@ class _PhysicalCharacteristicsSection extends StatelessWidget {
                 'Poids',
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey[700],
+                  color: Theme.of(context).colorScheme.onInverseSurface,
                 ),
               ),
               Text(
@@ -376,7 +376,7 @@ class _PhysicalCharacteristicsSection extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.black,
+                  color: Theme.of(context).colorScheme.onInverseSurface,
                 ),
               ),
             ],
@@ -400,18 +400,18 @@ class _CareAdviceSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onInverseSurface,
           ),
         ),
         SizedBox(height: 12),
         Container(
           padding: EdgeInsets.all(15),
           decoration: BoxDecoration(
-            color: Color(0xFFFFF5E6),
+            color: Theme.of(context).colorScheme.onSurface,
             borderRadius: BorderRadius.circular(12),
             border: Border(
               left: BorderSide(
-                color: Color(0xFFFF9500),
+                color: Theme.of(context).colorScheme.primary,
                 width: 4,
               ),
             ),
@@ -420,7 +420,7 @@ class _CareAdviceSection extends StatelessWidget {
             'Un brossage hebdomadaire est essentiel pour éviter les nœuds dans leur fourrure dense. Pendant la mue, un brossage quotidien est recommandé.',
             style: TextStyle(
               fontSize: 14,
-              color: Colors.grey[700],
+              color: Theme.of(context).colorScheme.onInverseSurface,
               height: 1.6,
             ),
           ),
@@ -445,35 +445,30 @@ class _OriginMapSection extends StatelessWidget {
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Theme.of(context).colorScheme.onInverseSurface,
           ),
         ),
         SizedBox(height: 12),
         ClipRRect(
           borderRadius: BorderRadius.circular(12),
-          child: Container(
+          child: SizedBox(
             height: 300,
             child: cat.latitude != null && cat.longitude != null
                 ? FlutterMap(
                     options: MapOptions(
-                      initialCenter: LatLng(
-                        cat.latitude!,
-                        cat.longitude!,
-                      ),
+                      initialCenter: LatLng(cat.latitude!, cat.longitude!),
                       initialZoom: 5,
                     ),
                     children: [
                       TileLayer(
-                        urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                        urlTemplate:
+                            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
                         subdomains: const ['a', 'b', 'c'],
                       ),
                       MarkerLayer(
                         markers: [
                           Marker(
-                            point: LatLng(
-                              cat.latitude!,
-                              cat.longitude!,
-                            ),
+                            point: LatLng(cat.latitude!, cat.longitude!),
                             width: 40,
                             height: 40,
                             child: Container(
@@ -502,10 +497,7 @@ class _OriginMapSection extends StatelessWidget {
                 : Center(
                     child: Text(
                       'Localisation non disponible',
-                      style: TextStyle(
-                        color: Colors.grey[700],
-                        fontSize: 14,
-                      ),
+                      style: TextStyle(color: Colors.grey[700], fontSize: 14),
                     ),
                   ),
           ),
