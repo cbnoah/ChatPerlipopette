@@ -52,13 +52,16 @@ class _FamilyCategoryCarouselState extends State<FamilyCategoryCarousel> {
             itemExtent: 250,
             shrinkExtent: 250,
             itemSnapping: true,
+            enableSplash: false,
             children: cats
                 .map(
                   (cat) => CatCarouselCard(
                     name: cat.name,
                     description: cat.description,
-                    imagePath: "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
+                    imagePath:
+                        "https://cdn2.thecatapi.com/images/${cat.imageRefId}.jpg",
                     context: context,
+                    id: cat.id,
                   ),
                 )
                 .toList(),
