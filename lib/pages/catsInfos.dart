@@ -37,59 +37,7 @@ class _CatsInfosState extends State<CatsInfos> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: FutureBuilder(
-          future: _cat,
-          builder: (context, asyncSnapshot) {
-            if (asyncSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: LinearProgressIndicator());
-            } else {
-              return Text(
-                asyncSnapshot.data!.name,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
-              );
-            }
-          },
-        ),
-        centerTitle: true,
-        leading: GestureDetector(
-          onTap: () {
-            if (GoRouter.of(context).canPop()) {
-              GoRouter.of(context).pop();
-            } else {
-              GoRouter.of(context).go('/');
-            }
-          },
-          child: Container(
-            margin: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: Image.asset('assets/icons/Arrow.png'),
-          ),
-        ),
-        actions: [
-          GestureDetector(
-            onTap: () => SharePlus.instance.share(ShareParams(uri: Uri.parse("chatperlipopette:/breed/${widget.id}"))),
-            child: Container(
-              margin: EdgeInsets.only(top: 0, right: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(Icons.share, color: Colors.black,),
-              ),
-            ),
-          ),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: FutureBuilder(
         future: _cat,
         builder: (context, asyncSnapshot) {
@@ -110,279 +58,27 @@ class _CatsInfosState extends State<CatsInfos> {
               ),
             );
           } else {
-            Cat futureCatData = asyncSnapshot.data!;
+            Cat cat = asyncSnapshot.data!;
             return SingleChildScrollView(
               child: Column(
                 children: [
-                  Hero(
-                    tag: widget.id,
-                    child: ClipRect(
-                      child: Image.network(
-                        "https://cdn2.thecatapi.com/images/${futureCatData.imageRefId}.jpg",
-                        fit: BoxFit.cover,
-                        width: double.infinity,
-                        height: 400,
-                        errorBuilder:
-                            (
-                              BuildContext context,
-                              Object exception,
-                              StackTrace? stackTrace,
-                            ) {
-                              return Image.asset(
-                                alignment: FractionalOffset.topCenter,
-                                fit: BoxFit.cover,
-                                'assets/images/image_error.png',
-                              );
-                            },
-                      ),
-                    ),
-                  ),
+                  _CatImageHero(catId: widget.id, imageRefId: cat.imageRefId),
                   Padding(
                     padding: EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    futureCatData.name,
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  SizedBox(height: 8),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.location_on,
-                                        color: Color(0xFFFF9500),
-                                        size: 18,
-                                      ),
-                                      SizedBox(width: 5),
-                                      Text(
-                                        futureCatData.origin,
-                                        style: TextStyle(
-                                          color: Color(0xFFFF9500),
-                                          fontSize: 14,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Icon(
-                              Icons.favorite_border,
-                              color: Color(0xFFFF9500),
-                              size: 28,
-                            ),
-                          ],
-                        ),
+                        _CatHeaderSection(cat: cat),
                         SizedBox(height: 25),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            _buildAttributeCard(
-                              '❤︎',
-                              'Affection',
-                              '${futureCatData.affectionLevel}/5',
-                            ),
-                            _buildAttributeCard(
-                              '⚡︎',
-                              'Énergie',
-                              '${futureCatData.energyLevel}/5',
-                            ),
-                            _buildAttributeCard(
-                              '🧠',
-                              'Intelligence',
-                              '${futureCatData.intelligence}/5',
-                            ),
-                          ],
-                        ),
+                        _AttributesSection(cat: cat),
                         SizedBox(height: 25),
-                        Row(
-                          children: [
-                            Text(
-                              'Tempérament',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Text(
-                          futureCatData.description,
-                          style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey[700],
-                            height: 1.6,
-                          ),
-                        ),
+                        _TemperamentSection(cat: cat),
                         SizedBox(height: 25),
-                        Row(
-                          children: [
-                            Text(
-                              'Caractéristiques physiques',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFF5E6),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Poids',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey[700],
-                                ),
-                              ),
-                              Text(
-                                '${futureCatData.metric} kg',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+                        _PhysicalCharacteristicsSection(cat: cat),
                         SizedBox(height: 25),
-                        Row(
-                          children: [
-                            Text(
-                              'Conseils de soin',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        Container(
-                          padding: EdgeInsets.all(15),
-                          decoration: BoxDecoration(
-                            color: Color(0xFFFFF5E6),
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border(
-                              left: BorderSide(
-                                color: Color(0xFFFF9500),
-                                width: 4,
-                              ),
-                            ),
-                          ),
-                          child: Text(
-                            'Un brossage hebdomadaire est essentiel pour éviter les nœuds dans leur fourrure dense. Pendant la mue, un brossage quotidien est recommandé.',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                              height: 1.6,
-                            ),
-                          ),
-                        ),
+                        _CareAdviceSection(),
                         SizedBox(height: 25),
-                        Row(
-                          children: [
-                            Text(
-                              'Origine',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 12),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            height: 300,
-                            child: futureCatData.latitude != null &&
-                                    futureCatData.longitude != null
-                                ? FlutterMap(
-                                    options: MapOptions(
-                                      initialCenter: LatLng(
-                                        futureCatData.latitude!,
-                                        futureCatData.longitude!,
-                                      ),
-                                      initialZoom: 5,
-                                    ),
-                                    children: [
-                                      TileLayer(
-                                        urlTemplate:
-                                            'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-                                        subdomains: const ['a', 'b', 'c'],
-                                      ),
-                                      MarkerLayer(
-                                        markers: [
-                                          Marker(
-                                            point: LatLng(
-                                              futureCatData.latitude!,
-                                              futureCatData.longitude!,
-                                            ),
-                                            width: 40,
-                                            height: 40,
-                                            child: Container(
-                                              decoration: BoxDecoration(
-                                                color: Colors.orange,
-                                                borderRadius:
-                                                    BorderRadius.circular(50),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                    color: Colors.black
-                                                        .withValues(alpha: 0.3),
-                                                    blurRadius: 4,
-                                                  ),
-                                                ],
-                                              ),
-                                              padding: EdgeInsets.all(8),
-                                              child: Icon(
-                                                Icons.location_on,
-                                                color: Colors.white,
-                                                size: 20,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                : Center(
-                                    child: Text(
-                                      'Localisation non disponible',
-                                      style: TextStyle(
-                                        color: Colors.grey[700],
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                  ),
-                          ),
-                        ),
+                        _OriginMapSection(cat: cat),
                       ],
                     ),
                   ),
@@ -395,7 +91,188 @@ class _CatsInfosState extends State<CatsInfos> {
     );
   }
 
-  Widget _buildAttributeCard(String emoji, String label, String value) {
+  PreferredSizeWidget _buildAppBar() {
+    return AppBar(
+      title: FutureBuilder(
+        future: _cat,
+        builder: (context, asyncSnapshot) {
+          if (asyncSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: LinearProgressIndicator());
+          } else {
+            return Text(
+              asyncSnapshot.data!.name,
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+            );
+          }
+        },
+      ),
+      centerTitle: true,
+      leading: GestureDetector(
+        onTap: () {
+          if (GoRouter.of(context).canPop()) {
+            GoRouter.of(context).pop();
+          } else {
+            GoRouter.of(context).go('/');
+          }
+        },
+        child: Container(
+          margin: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Image.asset('assets/icons/Arrow.png'),
+        ),
+      ),
+      actions: [
+        GestureDetector(
+          onTap: () => SharePlus.instance.share(ShareParams(uri: Uri.parse("chatperlipopette:/breed/${widget.id}"))),
+          child: Container(
+            margin: EdgeInsets.only(top: 0, right: 10),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(5.0),
+              child: Icon(Icons.share, color: Colors.black,),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CatImageHero extends StatelessWidget {
+  final String catId;
+  final String imageRefId;
+
+  const _CatImageHero({required this.catId, required this.imageRefId});
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: catId,
+      child: ClipRect(
+        child: Image.network(
+          "https://cdn2.thecatapi.com/images/$imageRefId.jpg",
+          fit: BoxFit.cover,
+          width: double.infinity,
+          height: 400,
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            return Image.asset(
+              alignment: FractionalOffset.topCenter,
+              fit: BoxFit.cover,
+              'assets/images/image_error.png',
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _CatHeaderSection extends StatelessWidget {
+  final Cat cat;
+
+  const _CatHeaderSection({required this.cat});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                cat.name,
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: 8),
+              Row(
+                children: [
+                  Icon(
+                    Icons.location_on,
+                    color: Color(0xFFFF9500),
+                    size: 18,
+                  ),
+                  SizedBox(width: 5),
+                  Text(
+                    cat.origin,
+                    style: TextStyle(
+                      color: Color(0xFFFF9500),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+        Icon(
+          Icons.favorite_border,
+          color: Color(0xFFFF9500),
+          size: 28,
+        ),
+      ],
+    );
+  }
+}
+
+class _AttributesSection extends StatelessWidget {
+  final Cat cat;
+
+  const _AttributesSection({required this.cat});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _AttributeCard(
+          emoji: '❤︎',
+          label: 'Affection',
+          value: '${cat.affectionLevel}/5',
+        ),
+        _AttributeCard(
+          emoji: '⚡︎',
+          label: 'Énergie',
+          value: '${cat.energyLevel}/5',
+        ),
+        _AttributeCard(
+          emoji: '🧠',
+          label: 'Intelligence',
+          value: '${cat.intelligence}/5',
+        ),
+      ],
+    );
+  }
+}
+
+class _AttributeCard extends StatelessWidget {
+  final String emoji;
+  final String label;
+  final String value;
+
+  const _AttributeCard({
+    required this.emoji,
+    required this.label,
+    required this.value,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
@@ -423,6 +300,217 @@ class _CatsInfosState extends State<CatsInfos> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _TemperamentSection extends StatelessWidget {
+  final Cat cat;
+
+  const _TemperamentSection({required this.cat});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Tempérament',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 12),
+        Text(
+          cat.description,
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[700],
+            height: 1.6,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PhysicalCharacteristicsSection extends StatelessWidget {
+  final Cat cat;
+
+  const _PhysicalCharacteristicsSection({required this.cat});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Caractéristiques physiques',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 12),
+        Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Color(0xFFFFF5E6),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Poids',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey[700],
+                ),
+              ),
+              Text(
+                '${cat.metric} kg',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _CareAdviceSection extends StatelessWidget {
+  const _CareAdviceSection();
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Conseils de soin',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 12),
+        Container(
+          padding: EdgeInsets.all(15),
+          decoration: BoxDecoration(
+            color: Color(0xFFFFF5E6),
+            borderRadius: BorderRadius.circular(12),
+            border: Border(
+              left: BorderSide(
+                color: Color(0xFFFF9500),
+                width: 4,
+              ),
+            ),
+          ),
+          child: Text(
+            'Un brossage hebdomadaire est essentiel pour éviter les nœuds dans leur fourrure dense. Pendant la mue, un brossage quotidien est recommandé.',
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[700],
+              height: 1.6,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _OriginMapSection extends StatelessWidget {
+  final Cat cat;
+
+  const _OriginMapSection({required this.cat});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Origine',
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
+          ),
+        ),
+        SizedBox(height: 12),
+        ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            height: 300,
+            child: cat.latitude != null && cat.longitude != null
+                ? FlutterMap(
+                    options: MapOptions(
+                      initialCenter: LatLng(
+                        cat.latitude!,
+                        cat.longitude!,
+                      ),
+                      initialZoom: 5,
+                    ),
+                    children: [
+                      TileLayer(
+                        urlTemplate: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+                        subdomains: const ['a', 'b', 'c'],
+                      ),
+                      MarkerLayer(
+                        markers: [
+                          Marker(
+                            point: LatLng(
+                              cat.latitude!,
+                              cat.longitude!,
+                            ),
+                            width: 40,
+                            height: 40,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.orange,
+                                borderRadius: BorderRadius.circular(50),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.3),
+                                    blurRadius: 4,
+                                  ),
+                                ],
+                              ),
+                              padding: EdgeInsets.all(8),
+                              child: Icon(
+                                Icons.location_on,
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : Center(
+                    child: Text(
+                      'Localisation non disponible',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 14,
+                      ),
+                    ),
+                  ),
+          ),
+        ),
+      ],
     );
   }
 }
