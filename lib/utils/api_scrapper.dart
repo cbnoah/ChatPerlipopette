@@ -200,9 +200,6 @@ Future<List<Cat>> fetchCatsList({int? limit, String? query}) async {
       try {
         final catJson = Cat.fromJson(item);
         
-        // Récupérer les coordonnées à partir de l'origine
-        final coords = await getCoordinatesFromOrigin(catJson.origin);
-        
         final catWithCoords = Cat(
           id: catJson.id,
           name: catJson.name,
@@ -216,8 +213,8 @@ Future<List<Cat>> fetchCatsList({int? limit, String? query}) async {
           affectionLevel: catJson.affectionLevel,
           energyLevel: catJson.energyLevel,
           intelligence: catJson.intelligence,
-          latitude: coords['latitude'],
-          longitude: coords['longitude'],
+          latitude: 0.0,
+          longitude: 0.0,
         );
         
         cats.add(catWithCoords);
