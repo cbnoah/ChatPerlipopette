@@ -29,13 +29,16 @@ class CatCarouselCard extends StatelessWidget {
       ),
       child: Column(
         children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 180,
+          Hero(
+            tag: name,
+            child: ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.network(
+                imagePath,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                height: 180,
+              ),
             ),
           ),
           Expanded(
@@ -58,7 +61,9 @@ class CatCarouselCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 14,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      overflow: TextOverflow.ellipsis,
                     ),
+                    maxLines: 3,
                   ),
                   const SizedBox(height: 10),
                   SizedBox(
@@ -93,4 +98,3 @@ class CatCarouselCard extends StatelessWidget {
     );
   }
 }
-
