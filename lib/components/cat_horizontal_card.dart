@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class CatHorizontalCard extends StatelessWidget {
+  final String id;
   final String name;
   final String description;
   final String imagePath;
   final BuildContext context;
 
   const CatHorizontalCard({
+    super.key,
     required this.name,
     required this.description,
     required this.imagePath,
     required this.context,
+    required this.id,
   });
 
   @override
@@ -34,12 +38,15 @@ class CatHorizontalCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 20.0),
               child: ClipRRect(
-                borderRadius: const BorderRadius.horizontal(left: Radius.circular(12)),
-                child: Image.asset(
-                  imagePath,
-                  fit: BoxFit.cover,
-                  width: 100,
-                  height: 100,
+                borderRadius: const BorderRadius.all(Radius.circular(12)),
+                child: Hero(
+                  tag: id,
+                  child: Image.network(
+                    imagePath,
+                    fit: BoxFit.cover,
+                    width: 100,
+                    height: 100,
+                  ),
                 ),
               ),
             ),
@@ -58,7 +65,9 @@ class CatHorizontalCard extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onInverseSurface,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onInverseSurface,
                           ),
                         ),
                         const SizedBox(height: 4),
@@ -66,18 +75,26 @@ class CatHorizontalCard extends StatelessWidget {
                           description,
                           style: TextStyle(
                             fontSize: 13,
-                            color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                            overflow: TextOverflow.ellipsis,
                           ),
+                          maxLines: 2,
                         ),
                       ],
                     ),
                     SizedBox(
                       width: 100,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => context.push('/breed/$id'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Theme.of(context).colorScheme.primary,
-                          foregroundColor: Theme.of(context).colorScheme.onSurface,
+                          backgroundColor: Theme.of(
+                            context,
+                          ).colorScheme.primary,
+                          foregroundColor: Theme.of(
+                            context,
+                          ).colorScheme.onSurface,
                           padding: const EdgeInsets.symmetric(vertical: 10),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6),
@@ -102,4 +119,3 @@ class CatHorizontalCard extends StatelessWidget {
     );
   }
 }
-
